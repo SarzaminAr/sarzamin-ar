@@ -1,38 +1,32 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const frontVideo = document.querySelector("#frontVideo");
-    const backVideo = document.querySelector("#backVideo");
+  const frontVideo = document.querySelector("#frontVideo");
+  const backVideo = document.querySelector("#backVideo");
 
-    const targets = document.querySelectorAll("[mindar-image-target]");
+  const frontTarget = document.querySelector('[mindar-image-target="targetIndex:0"]');
+  const backTarget = document.querySelector('[mindar-image-target="targetIndex:1"]');
 
-    // Target 0 (Front)
 
-    targets[0].addEventListener("targetFound", () => {
+  frontTarget.addEventListener("targetFound", () => {
+    frontVideo.currentTime = 0;
+    frontVideo.play();
+  });
 
-        frontVideo.currentTime = 0;
-        frontVideo.play();
 
-    });
+  frontTarget.addEventListener("targetLost", () => {
+    frontVideo.pause();
+  });
 
-    targets[0].addEventListener("targetLost", () => {
 
-        frontVideo.pause();
+  backTarget.addEventListener("targetFound", () => {
+    backVideo.currentTime = 0;
+    backVideo.play();
+  });
 
-    });
 
-    // Target 1 (Back)
+  backTarget.addEventListener("targetLost", () => {
+    backVideo.pause();
+  });
 
-    targets[1].addEventListener("targetFound", () => {
-
-        backVideo.currentTime = 0;
-        backVideo.play();
-
-    });
-
-    targets[1].addEventListener("targetLost", () => {
-
-        backVideo.pause();
-
-    });
 
 });
