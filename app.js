@@ -1,17 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const frontVideo = document.querySelector("#frontVideo");
+    const backVideo = document.querySelector("#backVideo");
 
-    const frontTarget =
-        document.querySelector(
-            '[mindar-image-target="targetIndex:0"]'
-        );
+    const frontTarget = document.querySelector(
+        '[mindar-image-target="targetIndex:0"]'
+    );
+
+    const backTarget = document.querySelector(
+        '[mindar-image-target="targetIndex:1"]'
+    );
 
 
+    // جلو تراکت
     frontTarget.addEventListener("targetFound", () => {
 
-        frontVideo.currentTime = 0;
+        console.log("Front found");
 
+        frontVideo.currentTime = 0;
         frontVideo.play();
 
     });
@@ -22,5 +28,25 @@ document.addEventListener("DOMContentLoaded", () => {
         frontVideo.pause();
 
     });
+
+
+
+    // پشت تراکت
+    backTarget.addEventListener("targetFound", () => {
+
+        console.log("Back found");
+
+        backVideo.currentTime = 0;
+        backVideo.play();
+
+    });
+
+
+    backTarget.addEventListener("targetLost", () => {
+
+        backVideo.pause();
+
+    });
+
 
 });
