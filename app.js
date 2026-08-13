@@ -1,52 +1,36 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const frontVideo = document.querySelector("#frontVideo");
-    const backVideo = document.querySelector("#backVideo");
-
-    const frontTarget = document.querySelector(
-        '[mindar-image-target="targetIndex:0"]'
-    );
-
-    const backTarget = document.querySelector(
-        '[mindar-image-target="targetIndex:1"]'
-    );
+const frontVideo = document.querySelector("#frontVideo");
+const backVideo = document.querySelector("#backVideo");
 
 
-    // جلو تراکت
-    frontTarget.addEventListener("targetFound", () => {
+const frontTarget = document.querySelector(
+'[mindar-image-target="targetIndex:0"]'
+);
 
-        console.log("Front found");
-
-        frontVideo.currentTime = 0;
-        frontVideo.play();
-
-    });
+const backTarget = document.querySelector(
+'[mindar-image-target="targetIndex:1"]'
+);
 
 
-    frontTarget.addEventListener("targetLost", () => {
-
-        frontVideo.pause();
-
-    });
+frontTarget.addEventListener("targetFound",()=>{
+frontVideo.play();
+});
 
 
-
-    // پشت تراکت
-    backTarget.addEventListener("targetFound", () => {
-
-        console.log("Back found");
-
-        backVideo.currentTime = 0;
-        backVideo.play();
-
-    });
+frontTarget.addEventListener("targetLost",()=>{
+frontVideo.pause();
+});
 
 
-    backTarget.addEventListener("targetLost", () => {
+backTarget.addEventListener("targetFound",()=>{
+backVideo.play();
+});
 
-        backVideo.pause();
 
-    });
+backTarget.addEventListener("targetLost",()=>{
+backVideo.pause();
+});
 
 
 });
