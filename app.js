@@ -1,38 +1,25 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-const frontVideo = document.querySelector("#frontVideo");
-const backVideo = document.querySelector("#backVideo");
-frontVideo.muted = true;
-backVideo.muted = true;
+    const scene = document.querySelector("a-scene");
 
-const frontTarget = document.querySelector(
-'[mindar-image-target="targetIndex:0"]'
-);
+    scene.addEventListener("arReady", () => {
+        document.body.insertAdjacentHTML(
+            "afterbegin",
+            '<div style="position:fixed;top:20px;left:10px;right:10px;background:green;color:white;padding:15px;text-align:center;z-index:99999;font-size:20px;">دوربین آماده است</div>'
+        );
+    });
 
-const backTarget = document.querySelector(
-'[mindar-image-target="targetIndex:1"]'
-);
+    scene.addEventListener("targetFound", (event) => {
+        document.body.insertAdjacentHTML(
+            "afterbegin",
+            '<div style="position:fixed;top:80px;left:10px;right:10px;background:blue;color:white;padding:15px;text-align:center;z-index:99999;font-size:20px;">🎯 تارگت پیدا شد</div>'
+        );
 
+        console.log("TARGET FOUND:", event);
+    });
 
-frontTarget.addEventListener("targetFound", () => {
-    alert("پیدا شد");
-    frontVideo.play();
-});
-
-
-frontTarget.addEventListener("targetLost",()=>{
-frontVideo.pause();
-});
-
-
-backTarget.addEventListener("targetFound",()=>{
-backVideo.play();
-});
-
-
-backTarget.addEventListener("targetLost",()=>{
-backVideo.pause();
-});
-
+    scene.addEventListener("targetLost", () => {
+        console.log("TARGET LOST");
+    });
 
 });
