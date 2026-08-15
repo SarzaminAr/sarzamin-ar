@@ -2,111 +2,26 @@
 <html lang="fa">
 
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>Sarzamin AR</title>
-
-
-<script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-
-<script defer src="app.js?v=10"></script>
+<title>Video Test</title>
 
 </head>
 
-
 <body>
 
+<h2>تست ویدئو</h2>
 
-<a-scene
-
-    mindar-image="imageTargetSrc: ./targets.mind;"
-
-    embedded
-
-    color-space="sRGB"
-
-    renderer="colorManagement: true"
-
-    vr-mode-ui="enabled: false"
-
-    device-orientation-permission-ui="enabled: false">
-
-
-    <a-assets>
-
-        <!-- ویدئوی جلو -->
-
-        <video
-            id="frontVideo"
-            src="./front.mp4"
-            preload="auto"
-            loop
-            muted
-            playsinline
-            webkit-playsinline
-            crossorigin="anonymous">
-        </video>
-
-
-        <!-- ویدئوی پشت -->
-
-        <video
-            id="backVideo"
-            src="./back.mp4"
-            preload="auto"
-            loop
-            muted
-            playsinline
-            webkit-playsinline
-            crossorigin="anonymous">
-        </video>
-
-    </a-assets>
-
-
-    <a-camera
-        position="0 0 0"
-        look-controls="enabled: false">
-    </a-camera>
-
-
-    <!-- ===== تصویر جلو / Image 1 ===== -->
-
-    <a-entity
-        mindar-image-target="targetIndex:0">
-
-        <a-video
-            src="#frontVideo"
-            width="1"
-            height="1.5"
-            position="0 0 0">
-        </a-video>
-
-    </a-entity>
-
-
-    <!-- ===== تصویر پشت / Image 2 ===== -->
-
-    <a-entity
-        mindar-image-target="targetIndex:1">
-
-        <a-video
-            src="#backVideo"
-            width="1"
-            height="1.5"
-            position="0 0 0">
-        </a-video>
-
-    </a-entity>
-
-
-</a-scene>
+<video
+    src="front.mp4"
+    controls
+    autoplay
+    muted
+    playsinline
+    webkit-playsinline
+    style="width:100%; max-width:500px;">
+</video>
 
 </body>
 
