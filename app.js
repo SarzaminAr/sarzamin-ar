@@ -1,25 +1,68 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const scene = document.querySelector("a-scene");
+    const frontVideo = document.querySelector("#frontVideo");
+    const backVideo = document.querySelector("#backVideo");
 
-    scene.addEventListener("arReady", () => {
-        document.body.insertAdjacentHTML(
-            "afterbegin",
-            '<div style="position:fixed;top:20px;left:10px;right:10px;background:green;color:white;padding:15px;text-align:center;z-index:99999;font-size:20px;">دوربین آماده است</div>'
-        );
+    const frontTarget =
+        document.querySelector('[mindar-image-target="targetIndex:0"]');
+
+    const backTarget =
+        document.querySelector('[mindar-image-target="targetIndex:1"]');
+
+
+    // ===== FRONT =====
+
+    frontTarget.addEventListener("targetFound", async () => {
+
+        console.log("FRONT TARGET FOUND");
+
+        frontVideo.currentTime = 0;
+        frontVideo.muted = true;
+
+        try {
+            await frontVideo.play();
+            console.log("FRONT VIDEO PLAYING");
+        } catch (error) {
+            console.log("FRONT VIDEO ERROR:", error);
+        }
+
     });
 
-    scene.addEventListener("targetFound", (event) => {
-        document.body.insertAdjacentHTML(
-            "afterbegin",
-            '<div style="position:fixed;top:80px;left:10px;right:10px;background:blue;color:white;padding:15px;text-align:center;z-index:99999;font-size:20px;">🎯 تارگت پیدا شد</div>'
-        );
 
-        console.log("TARGET FOUND:", event);
+    frontTarget.addEventListener("targetLost", () => {
+
+        console.log("FRONT TARGET LOST");
+
+        frontVideo.pause();
+
     });
 
-    scene.addEventListener("targetLost", () => {
-        console.log("TARGET LOST");
+
+    // ===== BACK =====
+
+    backTarget.addEventListener("targetFound", async () => {
+
+        console.log("BACK TARGET FOUND");
+
+        backVideo.currentTime = 0;
+        backVideo.muted = true;
+
+        try {
+            await backVideo.play();
+            console.log("BACK VIDEO PLAYING");
+        } catch (error) {
+            console.log("BACK VIDEO ERROR:", error);
+        }
+
+    });
+
+
+    backTarget.addEventListener("targetLost", () => {
+
+        console.log("BACK TARGET LOST");
+
+        backVideo.pause();
+
     });
 
 });
