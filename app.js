@@ -2,7 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const frontVideo = document.querySelector("#frontVideo");
 const backVideo = document.querySelector("#backVideo");
-
+frontVideo.muted = true;
+backVideo.muted = true;
 
 const frontTarget = document.querySelector(
 '[mindar-image-target="targetIndex:0"]'
