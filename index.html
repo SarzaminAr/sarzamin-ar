@@ -2,6 +2,7 @@
 <html lang="fa">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -11,98 +12,50 @@
 
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-<script defer src="app.js"></script>
+<script defer src="app.js?v=5"></script>
 
 </head>
 
-
 <body>
 
-
 <a-scene
+    mindar-image="imageTargetSrc: ./targets.mind;"
+    embedded
+    color-space="sRGB"
+    renderer="colorManagement: true"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false">
 
-mindar-image="imageTargetSrc: targets.mind;"
+    <a-camera
+        position="0 0 0"
+        look-controls="enabled: false">
+    </a-camera>
 
-embedded
+    <a-entity mindar-image-target="targetIndex: 0">
 
-color-space="sRGB"
+        <a-box
+            position="0 0 0"
+            color="red"
+            depth="0.1"
+            height="0.5"
+            width="0.5">
+        </a-box>
 
-renderer="colorManagement: true"
+    </a-entity>
 
-vr-mode-ui="enabled: false"
+    <a-entity mindar-image-target="targetIndex: 1">
 
-device-orientation-permission-ui="enabled: false">
+        <a-box
+            position="0 0 0"
+            color="blue"
+            depth="0.1"
+            height="0.5"
+            width="0.5">
+        </a-box>
 
-
-<a-assets>
-
-
-<video
-id="frontVideo"
-src="front.mp4"
-loop
-muted
-playsinline
-webkit-playsinline
-autoplay>
-</video>
-
-
-<video
-id="backVideo"
-src="back.mp4"
-loop
-muted
-playsinline
-webkit-playsinline
-autoplay>
-</video>
-
-
-</a-assets>
-
-
-
-<a-camera
-position="0 0 0"
-look-controls="enabled: false">
-</a-camera>
-
-
-
-<!-- جلوی تراکت - Image 1 -->
-
-<a-entity mindar-image-target="targetIndex:0">
-
-<a-video
-src="#frontVideo"
-width="1"
-height="1.5"
-position="0 0 0">
-</a-video>
-
-</a-entity>
-
-
-
-<!-- پشت تراکت - Image 2 -->
-
-<a-entity mindar-image-target="targetIndex:1">
-
-<a-video
-src="#backVideo"
-width="1"
-height="1.5"
-position="0 0 0">
-</a-video>
-
-</a-entity>
-
-
+    </a-entity>
 
 </a-scene>
 
-
 </body>
-
 </html>
