@@ -14,8 +14,9 @@ const backTarget = document.querySelector(
 );
 
 
-frontTarget.addEventListener("targetFound",()=>{
-frontVideo.play();
+frontTarget.addEventListener("targetFound", () => {
+    alert("پیدا شد");
+    frontVideo.play();
 });
 
 
