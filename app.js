@@ -2,13 +2,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const video = document.querySelector("#frontVideo");
 
+    const scene = document.querySelector("a-scene");
+
+    const arVideo = document.querySelector("#frontARVideo");
+
     const target = document.querySelector(
         '[mindar-image-target="targetIndex:0"]'
     );
 
-    const arVideo = document.querySelector("#frontARVideo");
 
-    // وضعیت
+    // وضعیت روی صفحه
     const status = document.createElement("div");
 
     status.style.position = "fixed";
@@ -21,17 +24,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     status.style.padding = "10px";
 
-    status.style.fontSize = "18px";
+    status.style.fontSize = "16px";
+
     status.style.direction = "ltr";
 
-    status.innerText = "JS LOADED";
+    status.innerText = "WAITING...";
 
     document.body.appendChild(status);
 
 
     // AR آماده شد
-    const scene = document.querySelector("a-scene");
-
     scene.addEventListener("arReady", () => {
 
         status.innerText = "AR READY";
@@ -39,34 +41,54 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    // تارگت پیدا شد
+    // Target Found
     target.addEventListener("targetFound", async () => {
 
         status.innerText = "TARGET FOUND";
 
         video.muted = true;
+
         video.currentTime = 0;
+
 
         try {
 
             await video.play();
 
             status.innerText =
-                "PLAYING " +
+                "PLAYING: " +
                 video.currentTime.toFixed(1);
+
+
+            setInterval(() => {
+
+                if (!video.paused) {
+
+                    status.innerText =
+                        "PLAYING: " +
+                        video.currentTime.toFixed(1);
+
+                } else {
+
+                    status.innerText = "PAUSED";
+
+                }
+
+            }, 500);
+
 
         } catch (error) {
 
-            console.log(error);
-
             status.innerText = "VIDEO ERROR";
+
+            console.log(error);
 
         }
 
     });
 
 
-    // تارگت گم شد
+    // Target Lost
     target.addEventListener("targetLost", () => {
 
         video.pause();
@@ -76,27 +98,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    // نمایش زمان واقعی ویدئو
-    setInterval(() => {
+    // مهم‌ترین قسمت:
+    // مجبور کردن Video Texture به آپدیت در هر فریم
 
-        if (!video.paused) {
-
-            status.innerText =
-                "PLAYING " +
-                video.currentTime.toFixed(1);
-
-        }
-
-    }, 500);
-
-
-    // آپدیت Video Texture
     scene.addEventListener("renderstart", () => {
 
         scene.addEventListener("tick", () => {
 
             const mesh =
                 arVideo.getObject3D("mesh");
+
 
             if (
                 mesh &&
