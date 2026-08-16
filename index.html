@@ -12,7 +12,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-<script defer src="app.js?v=20"></script>
+<script defer src="app.js?v=30"></script>
 
 </head>
 
@@ -50,41 +50,42 @@
 
     </a-assets>
 
+
     <a-camera
         position="0 0 0"
         look-controls="enabled: false">
     </a-camera>
 
-    <!-- FRONT -->
+
+    <!-- جلو -->
 
     <a-entity mindar-image-target="targetIndex:0">
 
-        <a-video
-            id="frontARVideo"
-            src="#frontVideo"
+        <a-plane
+            id="frontPlane"
             width="1"
             height="1.5"
             position="0 0 0"
-            material="shader: flat;">
-        </a-video>
+            material="shader: flat; src: #frontVideo;">
+        </a-plane>
 
     </a-entity>
 
 
-    <!-- BACK -->
+    <!-- پشت -->
 
     <a-entity mindar-image-target="targetIndex:1">
 
-        <a-video
-            id="backARVideo"
-            src="#backVideo"
+        <a-plane
+            id="backPlane"
             width="1"
             height="1.5"
             position="0 0 0"
-            material="shader: flat;">
-        </a-video>
+            material="shader: flat; src: #backVideo;">
+        </a-plane>
 
     </a-entity>
+
 
 </a-scene>
 
