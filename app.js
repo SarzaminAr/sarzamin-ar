@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         status.innerText = "TARGET FOUND";
 
-        video.muted = true;
+        video.muted = false;
         video.currentTime = 0;
 
         try {
