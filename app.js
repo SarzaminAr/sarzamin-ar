@@ -2,75 +2,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const scene = document.querySelector("a-scene");
 
+    const frontVideo = document.querySelector("#frontVideo");
+    const backVideo = document.querySelector("#backVideo");
 
-    // =========================
-    // VIDEOS
-    // =========================
+    const frontTarget = document.querySelector(
+        '[mindar-image-target="targetIndex:0"]'
+    );
 
-    const frontVideo =
-        document.querySelector("#frontVideo");
+    const backTarget = document.querySelector(
+        '[mindar-image-target="targetIndex:1"]'
+    );
 
-    const backVideo =
-        document.querySelector("#backVideo");
-
-
-    // =========================
-    // TARGETS
-    // =========================
-
-    const frontTarget =
-        document.querySelector(
-            '[mindar-image-target="targetIndex:0"]'
-        );
-
-    const backTarget =
-        document.querySelector(
-            '[mindar-image-target="targetIndex:1"]'
-        );
-
-
-    // =========================
-    // AR VIDEO MESHES
-    // =========================
-
-    const frontARVideo =
-        document.querySelector("#frontARVideo");
-
-    const backARVideo =
-        document.querySelector("#backARVideo");
+    const frontARVideo = document.querySelector("#frontARVideo");
+    const backARVideo = document.querySelector("#backARVideo");
 
 
     // =========================
     // STATUS
     // =========================
 
-    const status =
-        document.createElement("div");
-
+    const status = document.createElement("div");
 
     status.style.position = "fixed";
     status.style.top = "10px";
     status.style.left = "10px";
-
     status.style.zIndex = "999999";
 
-    status.style.background =
-        "rgba(0,0,0,0.8)";
-
+    status.style.background = "rgba(0,0,0,0.8)";
     status.style.color = "white";
 
     status.style.padding = "10px";
-
     status.style.fontSize = "18px";
-
     status.style.direction = "ltr";
-
 
     status.innerText = "WAITING";
 
-
     document.body.appendChild(status);
-
 
 
     // =========================
@@ -84,197 +51,141 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-
     // =========================
-    // FRONT FOUND
+    // FRONT TARGET FOUND
     // =========================
 
-    frontTarget.addEventListener(
-        "targetFound",
-        async () => {
+    frontTarget.addEventListener("targetFound", async () => {
+
+        status.innerText = "FRONT FOUND";
+
+        backVideo.pause();
+
+        frontVideo.muted = false;
+        frontVideo.currentTime = 0;
+
+        try {
+
+            await frontVideo.play();
 
             status.innerText =
-                "FRONT FOUND";
+                "FRONT PLAYING " +
+                frontVideo.currentTime.toFixed(1);
 
+        } catch (error) {
 
-            // پشت را متوقف کن
-            backVideo.pause();
+            console.log(error);
 
-
-            frontVideo.muted = false;
-
-            frontVideo.currentTime = 0;
-
-
-            try {
-
-                await frontVideo.play();
-
-
-                status.innerText =
-                    "FRONT PLAYING " +
-                    frontVideo.currentTime.toFixed(1);
-
-
-            } catch (error) {
-
-                console.log(error);
-
-                status.innerText =
-                    "FRONT VIDEO ERROR";
-
-            }
+            status.innerText = "FRONT VIDEO ERROR";
 
         }
-    );
 
+    });
 
 
     // =========================
-    // FRONT LOST
+    // FRONT TARGET LOST
     // =========================
 
-    frontTarget.addEventListener(
-        "targetLost",
-        () => {
+    frontTarget.addEventListener("targetLost", () => {
 
-            frontVideo.pause();
+        frontVideo.pause();
+
+        status.innerText = "FRONT LOST";
+
+    });
+
+
+    // =========================
+    // BACK TARGET FOUND
+    // =========================
+
+    backTarget.addEventListener("targetFound", async () => {
+
+        status.innerText = "BACK FOUND";
+
+        frontVideo.pause();
+
+        backVideo.muted = false;
+        backVideo.currentTime = 0;
+
+        try {
+
+            await backVideo.play();
 
             status.innerText =
-                "FRONT LOST";
+                "BACK PLAYING " +
+                backVideo.currentTime.toFixed(1);
+
+        } catch (error) {
+
+            console.log(error);
+
+            status.innerText = "BACK VIDEO ERROR";
 
         }
-    );
 
-
-
-    // =========================
-    // BACK FOUND
-    // =========================
-
-    backTarget.addEventListener(
-        "targetFound",
-        async () => {
-
-            status.innerText =
-                "BACK FOUND";
-
-
-            // جلو را متوقف کن
-            frontVideo.pause();
-
-
-            backVideo.muted = false;
-
-            backVideo.currentTime = 0;
-
-
-            try {
-
-                await backVideo.play();
-
-
-                status.innerText =
-                    "BACK PLAYING " +
-                    backVideo.currentTime.toFixed(1);
-
-
-            } catch (error) {
-
-                console.log(error);
-
-                status.innerText =
-                    "BACK VIDEO ERROR";
-
-            }
-
-        }
-    );
-
+    });
 
 
     // =========================
-    // BACK LOST
+    // BACK TARGET LOST
     // =========================
 
-    backTarget.addEventListener(
-        "targetLost",
-        () => {
+    backTarget.addEventListener("targetLost", () => {
 
-            backVideo.pause();
+        backVideo.pause();
 
-            status.innerText =
-                "BACK LOST";
+        status.innerText = "BACK LOST";
 
-        }
-    );
-
+    });
 
 
     // =========================
     // VIDEO TEXTURE UPDATE
     // =========================
 
-    scene.addEventListener(
-        "renderstart",
-        () => {
+    scene.addEventListener("renderstart", () => {
+
+        scene.addEventListener("tick", () => {
+
+            const frontMesh =
+                frontARVideo.getObject3D("mesh");
+
+            if (
+                frontMesh &&
+                frontMesh.material &&
+                frontMesh.material.map
+            ) {
+
+                frontMesh.material.map.needsUpdate = true;
+
+            }
 
 
-            scene.addEventListener(
-                "tick",
-                () => {
+            const backMesh =
+                backARVideo.getObject3D("mesh");
 
+            if (
+                backMesh &&
+                backMesh.material &&
+                backMesh.material.map
+            ) {
 
-                    // FRONT
+                backMesh.material.map.needsUpdate = true;
 
-                    const frontMesh =
-                        frontARVideo.getObject3D("mesh");
+            }
 
+        });
 
-                    if (
-                        frontMesh &&
-                        frontMesh.material &&
-                        frontMesh.material.map
-                    ) {
-
-                        frontMesh.material.map.needsUpdate =
-                            true;
-
-                    }
-
-
-
-                    // BACK
-
-                    const backMesh =
-                        backARVideo.getObject3D("mesh");
-
-
-                    if (
-                        backMesh &&
-                        backMesh.material &&
-                        backMesh.material.map
-                    ) {
-
-                        backMesh.material.map.needsUpdate =
-                            true;
-
-                    }
-
-                }
-            );
-
-        }
-    );
-
+    });
 
 
     // =========================
-    // SHOW VIDEO TIME
+    // SHOW CURRENT TIME
     // =========================
 
     setInterval(() => {
-
 
         if (!frontVideo.paused) {
 
@@ -284,7 +195,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
         else if (!backVideo.paused) {
 
             status.innerText =
@@ -292,7 +202,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 backVideo.currentTime.toFixed(1);
 
         }
-
 
     }, 500);
 
