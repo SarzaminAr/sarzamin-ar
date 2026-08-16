@@ -5,33 +5,67 @@ document.addEventListener("DOMContentLoaded", () => {
         '[mindar-image-target="targetIndex:0"]'
     );
 
+    // نمایش وضعیت روی صفحه
+    const status = document.createElement("div");
+
+    status.style.position = "fixed";
+    status.style.top = "10px";
+    status.style.left = "10px";
+    status.style.zIndex = "999999";
+    status.style.background = "rgba(0,0,0,0.8)";
+    status.style.color = "white";
+    status.style.padding = "10px";
+    status.style.fontSize = "16px";
+    status.style.direction = "ltr";
+
+    status.innerText = "WAITING...";
+
+    document.body.appendChild(status);
+
+
     target.addEventListener("targetFound", async () => {
 
-        console.log("TARGET FOUND");
+        status.innerText = "TARGET FOUND";
 
         video.muted = true;
         video.currentTime = 0;
 
         try {
+
             await video.play();
 
-            console.log("VIDEO PLAY CALLED");
+            status.innerText = "PLAYING: " + video.currentTime.toFixed(1);
 
             setInterval(() => {
-                console.log("VIDEO TIME:", video.currentTime);
-            }, 1000);
+
+                if (!video.paused) {
+
+                    status.innerText =
+                        "PLAYING: " +
+                        video.currentTime.toFixed(1);
+
+                } else {
+
+                    status.innerText = "PAUSED";
+
+                }
+
+            }, 500);
 
         } catch (error) {
-            console.error("VIDEO ERROR:", error);
+
+            status.innerText = "VIDEO ERROR";
+
         }
 
     });
 
+
     target.addEventListener("targetLost", () => {
 
-        console.log("TARGET LOST");
-
         video.pause();
+
+        status.innerText = "TARGET LOST";
 
     });
 
