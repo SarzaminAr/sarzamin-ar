@@ -1,11 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const video = document.querySelector("#frontVideo");
+
     const scene = document.querySelector("a-scene");
+
     const arVideo = document.querySelector("#frontARVideo");
 
     const target = document.querySelector(
-        '[mindar-image-target="targetIndex:0"]'
+        '[mindar-image-target="targetIndex: 0"]'
     );
 
 
@@ -18,13 +20,18 @@ document.addEventListener("DOMContentLoaded", () => {
     status.style.position = "fixed";
     status.style.top = "10px";
     status.style.left = "10px";
+
     status.style.zIndex = "999999";
 
-    status.style.background = "rgba(0,0,0,0.8)";
+    status.style.background =
+        "rgba(0,0,0,0.8)";
+
     status.style.color = "white";
 
     status.style.padding = "10px";
+
     status.style.fontSize = "18px";
+
     status.style.direction = "ltr";
 
     status.innerText = "WAITING";
@@ -33,12 +40,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // =========================
+    // CHECK TARGET ELEMENT
+    // =========================
+
+    if (!target) {
+
+        status.innerText =
+            "TARGET ELEMENT NOT FOUND";
+
+        return;
+    }
+
+
+    // =========================
     // AR READY
     // =========================
 
     scene.addEventListener("arReady", () => {
 
-        status.innerText = "AR READY";
+        status.innerText =
+            "AR READY";
 
     });
 
@@ -47,76 +68,98 @@ document.addEventListener("DOMContentLoaded", () => {
     // TARGET FOUND
     // =========================
 
-    target.addEventListener("targetFound", async () => {
-
-        status.innerText = "TARGET FOUND";
-
-        video.muted = false;
-
-        video.currentTime = 0;
-
-
-        try {
-
-            await video.play();
+    target.addEventListener(
+        "targetFound",
+        async () => {
 
             status.innerText =
-                "PLAYING " +
-                video.currentTime.toFixed(1);
+                "TARGET FOUND";
 
-        } catch (error) {
 
-            console.log("VIDEO ERROR:", error);
+            video.muted = false;
 
-            status.innerText = "VIDEO ERROR";
+            video.currentTime = 0;
+
+
+            try {
+
+                await video.play();
+
+
+                status.innerText =
+                    "PLAYING " +
+                    video.currentTime.toFixed(1);
+
+
+            } catch (error) {
+
+                console.log(
+                    "VIDEO ERROR:",
+                    error
+                );
+
+                status.innerText =
+                    "VIDEO ERROR";
+
+            }
 
         }
-
-    });
+    );
 
 
     // =========================
     // TARGET LOST
     // =========================
 
-    target.addEventListener("targetLost", () => {
+    target.addEventListener(
+        "targetLost",
+        () => {
 
-        video.pause();
+            video.pause();
 
-        status.innerText = "TARGET LOST";
+            status.innerText =
+                "TARGET LOST";
 
-    });
+        }
+    );
 
 
     // =========================
     // VIDEO TEXTURE UPDATE
     // =========================
 
-    scene.addEventListener("renderstart", () => {
+    scene.addEventListener(
+        "renderstart",
+        () => {
 
-        scene.addEventListener("tick", () => {
+            scene.addEventListener(
+                "tick",
+                () => {
 
-            const mesh =
-                arVideo.getObject3D("mesh");
+                    const mesh =
+                        arVideo.getObject3D("mesh");
 
 
-            if (
-                mesh &&
-                mesh.material &&
-                mesh.material.map
-            ) {
+                    if (
+                        mesh &&
+                        mesh.material &&
+                        mesh.material.map
+                    ) {
 
-                mesh.material.map.needsUpdate = true;
+                        mesh.material.map.needsUpdate =
+                            true;
 
-            }
+                    }
 
-        });
+                }
+            );
 
-    });
+        }
+    );
 
 
     // =========================
-    // SHOW CURRENT TIME
+    // SHOW VIDEO TIME
     // =========================
 
     setInterval(() => {
