@@ -3,27 +3,40 @@ document.addEventListener("DOMContentLoaded", () => {
     const frontVideo = document.querySelector("#frontVideo");
     const backVideo = document.querySelector("#backVideo");
 
-    const frontTarget =
-        document.querySelector('[mindar-image-target="targetIndex:0"]');
-
-    const backTarget =
-        document.querySelector('[mindar-image-target="targetIndex:1"]');
+    const frontARVideo = document.querySelector("#frontARVideo");
+    const backARVideo = document.querySelector("#backARVideo");
 
 
-    // ===== FRONT =====
+    const frontTarget = document.querySelector(
+        '[mindar-image-target="targetIndex:0"]'
+    );
+
+    const backTarget = document.querySelector(
+        '[mindar-image-target="targetIndex:1"]'
+    );
+
+
+    // FRONT
 
     frontTarget.addEventListener("targetFound", async () => {
 
-        console.log("FRONT TARGET FOUND");
+        console.log("FRONT FOUND");
 
-        frontVideo.currentTime = 0;
         frontVideo.muted = true;
+        frontVideo.currentTime = 0;
 
         try {
+
             await frontVideo.play();
-            console.log("FRONT VIDEO PLAYING");
+
+            frontARVideo.components.material.material.map.needsUpdate = true;
+
+            console.log("FRONT PLAYING");
+
         } catch (error) {
-            console.log("FRONT VIDEO ERROR:", error);
+
+            console.error("FRONT VIDEO ERROR:", error);
+
         }
 
     });
@@ -31,35 +44,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
     frontTarget.addEventListener("targetLost", () => {
 
-        console.log("FRONT TARGET LOST");
-
         frontVideo.pause();
 
     });
 
 
-    // ===== BACK =====
+    // BACK
 
     backTarget.addEventListener("targetFound", async () => {
 
-        console.log("BACK TARGET FOUND");
+        console.log("BACK FOUND");
 
-        backVideo.currentTime = 0;
         backVideo.muted = true;
+        backVideo.currentTime = 0;
 
         try {
+
             await backVideo.play();
-            console.log("BACK VIDEO PLAYING");
+
+            backARVideo.components.material.material.map.needsUpdate = true;
+
+            console.log("BACK PLAYING");
+
         } catch (error) {
-            console.log("BACK VIDEO ERROR:", error);
+
+            console.error("BACK VIDEO ERROR:", error);
+
         }
 
     });
 
 
     backTarget.addEventListener("targetLost", () => {
-
-        console.log("BACK TARGET LOST");
 
         backVideo.pause();
 
