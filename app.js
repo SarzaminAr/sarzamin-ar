@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => { 
- 
+ console.log("APP VERSION 105");
     const video = document.querySelector("#frontVideo"); 
     const scene = document.querySelector("a-scene"); 
     const arVideo = document.querySelector("#frontARVideo"); 
