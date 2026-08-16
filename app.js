@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+    const video = document.querySelector("#frontVideo");
     const scene = document.querySelector("a-scene");
 
     const status = document.createElement("div");
@@ -14,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     status.style.fontSize = "18px";
     status.style.direction = "ltr";
 
-    status.innerText = "JS LOADED";
+    status.innerText = "WAITING";
 
     document.body.appendChild(status);
 
@@ -22,12 +23,43 @@ document.addEventListener("DOMContentLoaded", () => {
         status.innerText = "AR READY";
     });
 
-    scene.addEventListener("targetFound", () => {
+    scene.addEventListener("targetFound", async () => {
+
         status.innerText = "TARGET FOUND";
+
+        video.muted = true;
+        video.currentTime = 0;
+
+        try {
+
+            await video.play();
+
+            status.innerText =
+                "PLAYING " + video.currentTime.toFixed(1);
+
+            setInterval(() => {
+
+                status.innerText =
+                    "PLAYING " + video.currentTime.toFixed(1);
+
+            }, 500);
+
+        } catch (error) {
+
+            status.innerText = "VIDEO ERROR";
+
+            console.log(error);
+
+        }
+
     });
 
     scene.addEventListener("targetLost", () => {
+
+        video.pause();
+
         status.innerText = "TARGET LOST";
+
     });
 
 });
