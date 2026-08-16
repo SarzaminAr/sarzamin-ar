@@ -1,33 +1,31 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const video = document.querySelector("#testVideo");
-
-    const frontTarget = document.querySelector(
+    const video = document.querySelector("#frontVideo");
+    const target = document.querySelector(
         '[mindar-image-target="targetIndex:0"]'
     );
 
-    frontTarget.addEventListener("targetFound", async () => {
+    target.addEventListener("targetFound", async () => {
 
-        console.log("TARGET FOUND");
-
-        video.style.display = "block";
+        console.log("FRONT TARGET FOUND");
 
         video.currentTime = 0;
         video.muted = true;
 
         try {
             await video.play();
-            console.log("VIDEO PLAYING");
+            console.log("FRONT VIDEO PLAYING");
         } catch (error) {
             console.error("VIDEO ERROR:", error);
         }
 
     });
 
-    frontTarget.addEventListener("targetLost", () => {
+    target.addEventListener("targetLost", () => {
+
+        console.log("FRONT TARGET LOST");
 
         video.pause();
-        video.style.display = "none";
 
     });
 
