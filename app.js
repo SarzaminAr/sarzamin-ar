@@ -1,11 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const video = document.querySelector("#frontVideo");
-    const target = document.querySelector(
-        '[mindar-image-target="targetIndex:0"]'
-    );
+    const scene = document.querySelector("a-scene");
 
-    // نمایش وضعیت روی صفحه
     const status = document.createElement("div");
 
     status.style.position = "fixed";
@@ -15,58 +11,23 @@ document.addEventListener("DOMContentLoaded", () => {
     status.style.background = "rgba(0,0,0,0.8)";
     status.style.color = "white";
     status.style.padding = "10px";
-    status.style.fontSize = "16px";
+    status.style.fontSize = "18px";
     status.style.direction = "ltr";
 
-    status.innerText = "WAITING...";
+    status.innerText = "JS LOADED";
 
     document.body.appendChild(status);
 
-
-    target.addEventListener("targetFound", async () => {
-
-        status.innerText = "TARGET FOUND";
-
-        video.muted = true;
-        video.currentTime = 0;
-
-        try {
-
-            await video.play();
-
-            status.innerText = "PLAYING: " + video.currentTime.toFixed(1);
-
-            setInterval(() => {
-
-                if (!video.paused) {
-
-                    status.innerText =
-                        "PLAYING: " +
-                        video.currentTime.toFixed(1);
-
-                } else {
-
-                    status.innerText = "PAUSED";
-
-                }
-
-            }, 500);
-
-        } catch (error) {
-
-            status.innerText = "VIDEO ERROR";
-
-        }
-
+    scene.addEventListener("arReady", () => {
+        status.innerText = "AR READY";
     });
 
+    scene.addEventListener("targetFound", () => {
+        status.innerText = "TARGET FOUND";
+    });
 
-    target.addEventListener("targetLost", () => {
-
-        video.pause();
-
+    scene.addEventListener("targetLost", () => {
         status.innerText = "TARGET LOST";
-
     });
 
 });
