@@ -1,176 +1,86 @@
-document.addEventListener("DOMContentLoaded", () => {
-
-    const frontVideo = document.querySelector("#frontVideo");
-    const backVideo = document.querySelector("#backVideo");
-
-    const scene = document.querySelector("a-scene");
-
-    const frontTarget = document.querySelector(
-        '[mindar-image-target="targetIndex: 0"]'
-    );
-
-    const backTarget = document.querySelector(
-        '[mindar-image-target="targetIndex: 1"]'
-    );
-
-    const frontARVideo = document.querySelector("#frontARVideo");
-    const backARVideo = document.querySelector("#backARVideo");
-
-
-    const status = document.createElement("div");
-
-    status.style.position = "fixed";
-    status.style.top = "10px";
-    status.style.left = "10px";
-    status.style.zIndex = "999999";
-    status.style.background = "rgba(0,0,0,0.8)";
-    status.style.color = "white";
-    status.style.padding = "10px";
-    status.style.fontSize = "18px";
-    status.style.direction = "ltr";
-
-    status.innerText = "WAITING";
-
-    document.body.appendChild(status);
-
-
-    scene.addEventListener("arReady", () => {
-
-        status.innerText = "AR READY";
-
-    });
-
-
-    // =====================================
-    // FRONT TARGET
-    // =====================================
-
-    frontTarget.addEventListener("targetFound", async () => {
-
-        console.log("FRONT TARGET FOUND");
-
-        status.innerText = "FRONT FOUND";
-
-        backVideo.pause();
-
-        frontVideo.muted = false;
-        frontVideo.currentTime = 0;
-
-        try {
-
-            await frontVideo.play();
-
-            status.innerText =
-                "FRONT PLAYING " +
-                frontVideo.currentTime.toFixed(1);
-
-        } catch (error) {
-
-            status.innerText = "FRONT VIDEO ERROR";
-
-            console.log(error);
-
-        }
-
-    });
-
-
-    frontTarget.addEventListener("targetLost", () => {
-
-        console.log("FRONT TARGET LOST");
-
-        frontVideo.pause();
-
-        status.innerText = "FRONT LOST";
-
-    });
-
-
-    // =====================================
-    // BACK TARGET
-    // =====================================
-
-    backTarget.addEventListener("targetFound", async () => {
-
-        console.log("BACK TARGET FOUND");
-
-        status.innerText = "BACK FOUND";
-
-        frontVideo.pause();
-
-        backVideo.muted = false;
-        backVideo.currentTime = 0;
-
-        try {
-
-            await backVideo.play();
-
-            status.innerText =
-                "BACK PLAYING " +
-                backVideo.currentTime.toFixed(1);
-
-        } catch (error) {
-
-            status.innerText = "BACK VIDEO ERROR";
-
-            console.log(error);
-
-        }
-
-    });
-
-
-    backTarget.addEventListener("targetLost", () => {
-
-        console.log("BACK TARGET LOST");
-
-        backVideo.pause();
-
-        status.innerText = "BACK LOST";
-
-    });
-
-
-    // =====================================
-    // VIDEO TEXTURE UPDATE
-    // =====================================
-
-    scene.addEventListener("renderstart", () => {
-
-        scene.addEventListener("tick", () => {
-
-
-            const frontMesh =
-                frontARVideo.getObject3D("mesh");
-
-
-            if (
-                frontMesh &&
-                frontMesh.material &&
-                frontMesh.material.map
-            ) {
-
-                frontMesh.material.map.needsUpdate = true;
-
-            }
-
-
-            const backMesh =
-                backARVideo.getObject3D("mesh");
-
-
-            if (
-                backMesh &&
-                backMesh.material &&
-                backMesh.material.map
-            ) {
-
-                backMesh.material.map.needsUpdate = true;
-
-            }
-
-        });
-
-    });
-
+document.addEventListener("DOMContentLoaded", () => { 
+ 
+    const video = document.querySelector("#frontVideo"); 
+    const scene = document.querySelector("a-scene"); 
+    const arVideo = document.querySelector("#frontARVideo"); 
+ 
+    const status = document.createElement("div"); 
+ 
+    status.style.position = "fixed"; 
+    status.style.top = "10px"; 
+    status.style.left = "10px"; 
+    status.style.zIndex = "999999"; 
+    status.style.background = "rgba(0,0,0,0.8)"; 
+    status.style.color = "white"; 
+    status.style.padding = "10px"; 
+    status.style.fontSize = "18px"; 
+    status.style.direction = "ltr"; 
+ 
+    status.innerText = "WAITING"; 
+ 
+    document.body.appendChild(status); 
+ 
+ 
+    scene.addEventListener("arReady", () => { 
+ 
+        status.innerText = "AR READY"; 
+ 
+    }); 
+ 
+ 
+    scene.addEventListener("targetFound", async () => { 
+ 
+        status.innerText = "TARGET FOUND"; 
+ 
+        video.muted = false; 
+        video.currentTime = 0; 
+ 
+        try { 
+ 
+            await video.play(); 
+ 
+            status.innerText = 
+                "PLAYING " + video.currentTime.toFixed(1); 
+ 
+        } catch (error) { 
+ 
+            status.innerText = "VIDEO ERROR"; 
+ 
+            console.log(error); 
+ 
+        } 
+ 
+    }); 
+ 
+ 
+    scene.addEventListener("targetLost", () => { 
+ 
+        video.pause(); 
+ 
+        status.innerText = "TARGET LOST"; 
+ 
+    }); 
+ 
+ 
+    // مجبور کردن Video Texture به آپدیت در هر فریم 
+    scene.addEventListener("renderstart", () => { 
+ 
+        scene.addEventListener("tick", () => { 
+ 
+            const mesh = arVideo.getObject3D("mesh"); 
+ 
+            if ( 
+                mesh && 
+                mesh.material && 
+                mesh.material.map 
+            ) { 
+ 
+                mesh.material.map.needsUpdate = true; 
+ 
+            } 
+ 
+        }); 
+ 
+    }); 
+ 
 });
