@@ -5,16 +5,33 @@ document.addEventListener("DOMContentLoaded", () => {
         '[mindar-image-target="targetIndex:0"]'
     );
 
+    video.addEventListener("loadeddata", () => {
+        console.log("VIDEO LOADED");
+    });
+
+    video.addEventListener("play", () => {
+        console.log("VIDEO PLAY EVENT");
+    });
+
     target.addEventListener("targetFound", async () => {
 
         console.log("FRONT TARGET FOUND");
 
-        video.currentTime = 0;
         video.muted = true;
+        video.currentTime = 0;
 
         try {
             await video.play();
-            console.log("FRONT VIDEO PLAYING");
+
+            console.log("VIDEO PLAYING");
+
+            const arVideo = document.querySelector("#frontARVideo");
+
+            arVideo.setAttribute(
+                "material",
+                "shader: flat; src: #frontVideo"
+            );
+
         } catch (error) {
             console.error("VIDEO ERROR:", error);
         }
