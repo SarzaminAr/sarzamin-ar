@@ -1,58 +1,34 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const frontVideo = document.querySelector("#frontVideo");
-    const backVideo = document.querySelector("#backVideo");
+    const video = document.querySelector("#testVideo");
 
     const frontTarget = document.querySelector(
         '[mindar-image-target="targetIndex:0"]'
     );
 
-    const backTarget = document.querySelector(
-        '[mindar-image-target="targetIndex:1"]'
-    );
-
-
     frontTarget.addEventListener("targetFound", async () => {
 
-        console.log("FRONT FOUND");
+        console.log("TARGET FOUND");
 
-        frontVideo.muted = true;
-        frontVideo.currentTime = 0;
+        video.style.display = "block";
+
+        video.currentTime = 0;
+        video.muted = true;
 
         try {
-            await frontVideo.play();
-            console.log("FRONT PLAYING");
+            await video.play();
+            console.log("VIDEO PLAYING");
         } catch (error) {
-            console.error("FRONT ERROR", error);
+            console.error("VIDEO ERROR:", error);
         }
 
     });
-
 
     frontTarget.addEventListener("targetLost", () => {
-        frontVideo.pause();
-    });
 
+        video.pause();
+        video.style.display = "none";
 
-    backTarget.addEventListener("targetFound", async () => {
-
-        console.log("BACK FOUND");
-
-        backVideo.muted = true;
-        backVideo.currentTime = 0;
-
-        try {
-            await backVideo.play();
-            console.log("BACK PLAYING");
-        } catch (error) {
-            console.error("BACK ERROR", error);
-        }
-
-    });
-
-
-    backTarget.addEventListener("targetLost", () => {
-        backVideo.pause();
     });
 
 });
