@@ -14,22 +14,15 @@
 
 
     <!-- A-Frame -->
-    <script
-        src="https://aframe.io/releases/1.4.2/aframe.min.js">
-    </script>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 
 
     <!-- MindAR -->
-    <script
-        src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
 
-    <!-- App JS -->
-    <script
-        defer
-        src="app.js?v=70">
-    </script>
+    <!-- App -->
+    <script defer src="app.js?v=80"></script>
 
 
     <style>
@@ -61,96 +54,135 @@
 <body>
 
 
-    <a-scene
+<a-scene
 
-        mindar-image="
-            imageTargetSrc: ./targets.mind;
-        "
+    mindar-image="imageTargetSrc: ./targets.mind;"
 
-        embedded
+    embedded
 
-        vr-mode-ui="enabled: false"
+    vr-mode-ui="enabled: false"
 
-        device-orientation-permission-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false"
 
-        renderer="colorManagement: true;"
+    renderer="colorManagement: true;"
+>
+
+
+    <!-- ========================= -->
+    <!-- VIDEOS -->
+    <!-- ========================= -->
+
+    <a-assets>
+
+
+        <!-- FRONT -->
+
+        <video
+
+            id="frontVideo"
+
+            src="./front.mp4"
+
+            preload="auto"
+
+            loop
+
+            playsinline
+
+            webkit-playsinline
+        >
+        </video>
+
+
+        <!-- BACK -->
+
+        <video
+
+            id="backVideo"
+
+            src="./back.mp4"
+
+            preload="auto"
+
+            loop
+
+            playsinline
+
+            webkit-playsinline
+        >
+        </video>
+
+
+    </a-assets>
+
+
+
+    <!-- CAMERA -->
+
+    <a-camera
+
+        position="0 0 0"
+
+        look-controls="enabled: false"
+    >
+    </a-camera>
+
+
+
+    <!-- ========================= -->
+    <!-- FRONT TARGET -->
+    <!-- targetIndex 0 -->
+    <!-- ========================= -->
+
+    <a-entity
+        mindar-image-target="targetIndex: 0"
     >
 
+        <a-video
 
-        <!-- ===================== -->
-        <!-- ASSETS -->
-        <!-- ===================== -->
+            id="frontARVideo"
 
-        <a-assets>
+            src="#frontVideo"
 
-            <video
+            width="1"
 
-                id="frontVideo"
-
-                src="./front.mp4"
-
-                preload="auto"
-
-                loop
-
-                muted
-
-                playsinline
-
-                webkit-playsinline
-            >
-            </video>
-
-        </a-assets>
-
-
-
-        <!-- ===================== -->
-        <!-- CAMERA -->
-        <!-- ===================== -->
-
-        <a-camera
+            height="1.0105"
 
             position="0 0 0"
-
-            look-controls="enabled: false"
         >
-        </a-camera>
+        </a-video>
+
+    </a-entity>
 
 
 
-        <!-- ===================== -->
-        <!-- FRONT TARGET -->
-        <!-- targetIndex 0 = جلو -->
-        <!-- ===================== -->
+    <!-- ========================= -->
+    <!-- BACK TARGET -->
+    <!-- targetIndex 1 -->
+    <!-- ========================= -->
 
-        <a-entity
+    <a-entity
+        mindar-image-target="targetIndex: 1"
+    >
 
-            mindar-image-target="
-                targetIndex: 0
-            "
+        <a-video
+
+            id="backARVideo"
+
+            src="#backVideo"
+
+            width="1"
+
+            height="0.6667"
+
+            position="0 0 0"
         >
+        </a-video>
+
+    </a-entity>
 
 
-            <a-video
-
-                id="frontARVideo"
-
-                src="#frontVideo"
-
-                width="1"
-
-                height="1.0105"
-
-                position="0 0 0"
-            >
-            </a-video>
-
-
-        </a-entity>
-
-
-    </a-scene>
+</a-scene>
 
 
 </body>
