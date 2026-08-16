@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const video = document.querySelector("#frontVideo");
     const scene = document.querySelector("a-scene");
+    const arVideo = document.querySelector("#frontARVideo");
 
     const status = document.createElement("div");
 
@@ -19,9 +20,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.body.appendChild(status);
 
+
     scene.addEventListener("arReady", () => {
+
         status.innerText = "AR READY";
+
     });
+
 
     scene.addEventListener("targetFound", async () => {
 
@@ -37,13 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
             status.innerText =
                 "PLAYING " + video.currentTime.toFixed(1);
 
-            setInterval(() => {
-
-                status.innerText =
-                    "PLAYING " + video.currentTime.toFixed(1);
-
-            }, 500);
-
         } catch (error) {
 
             status.innerText = "VIDEO ERROR";
@@ -54,11 +52,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
+
     scene.addEventListener("targetLost", () => {
 
         video.pause();
 
         status.innerText = "TARGET LOST";
+
+    });
+
+
+    // مجبور کردن Video Texture به آپدیت در هر فریم
+    scene.addEventListener("renderstart", () => {
+
+        scene.addEventListener("tick", () => {
+
+            const mesh = arVideo.getObject3D("mesh");
+
+            if (
+                mesh &&
+                mesh.material &&
+                mesh.material.map
+            ) {
+
+                mesh.material.map.needsUpdate = true;
+
+            }
+
+        });
 
     });
 
