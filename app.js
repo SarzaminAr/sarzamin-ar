@@ -5,6 +5,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const scene = document.querySelector("a-scene");
 
+    const frontTarget = document.querySelector(
+        '[mindar-image-target="targetIndex: 0"]'
+    );
+
+    const backTarget = document.querySelector(
+        '[mindar-image-target="targetIndex: 1"]'
+    );
+
     const frontARVideo = document.querySelector("#frontARVideo");
     const backARVideo = document.querySelector("#backARVideo");
 
@@ -26,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(status);
 
 
-
     scene.addEventListener("arReady", () => {
 
         status.innerText = "AR READY";
@@ -34,119 +41,104 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
+    // =====================================
+    // FRONT TARGET
+    // =====================================
 
-    scene.addEventListener("targetFound", async (event) => {
+    frontTarget.addEventListener("targetFound", async () => {
 
-        const targetIndex = event.detail.targetIndex;
+        console.log("FRONT TARGET FOUND");
 
-        console.log("TARGET FOUND:", targetIndex);
+        status.innerText = "FRONT FOUND";
 
+        backVideo.pause();
 
-        // =========================
-        // FRONT
-        // =========================
+        frontVideo.muted = false;
+        frontVideo.currentTime = 0;
 
-        if (targetIndex === 0) {
+        try {
 
-            status.innerText = "FRONT FOUND";
+            await frontVideo.play();
 
-            backVideo.pause();
+            status.innerText =
+                "FRONT PLAYING " +
+                frontVideo.currentTime.toFixed(1);
 
-            frontVideo.muted = false;
-            frontVideo.currentTime = 0;
+        } catch (error) {
 
-            try {
+            status.innerText = "FRONT VIDEO ERROR";
 
-                await frontVideo.play();
-
-                status.innerText =
-                    "FRONT PLAYING " +
-                    frontVideo.currentTime.toFixed(1);
-
-            } catch (error) {
-
-                status.innerText = "FRONT VIDEO ERROR";
-
-                console.log(error);
-
-            }
-
-        }
-
-
-        // =========================
-        // BACK
-        // =========================
-
-        if (targetIndex === 1) {
-
-            status.innerText = "BACK FOUND";
-
-            frontVideo.pause();
-
-            backVideo.muted = false;
-            backVideo.currentTime = 0;
-
-            try {
-
-                await backVideo.play();
-
-                status.innerText =
-                    "BACK PLAYING " +
-                    backVideo.currentTime.toFixed(1);
-
-            } catch (error) {
-
-                status.innerText = "BACK VIDEO ERROR";
-
-                console.log(error);
-
-            }
+            console.log(error);
 
         }
 
     });
 
 
+    frontTarget.addEventListener("targetLost", () => {
 
-    scene.addEventListener("targetLost", (event) => {
+        console.log("FRONT TARGET LOST");
 
-        const targetIndex = event.detail.targetIndex;
+        frontVideo.pause();
 
-        console.log("TARGET LOST:", targetIndex);
-
-
-        if (targetIndex === 0) {
-
-            frontVideo.pause();
-
-            status.innerText = "FRONT LOST";
-
-        }
-
-
-        if (targetIndex === 1) {
-
-            backVideo.pause();
-
-            status.innerText = "BACK LOST";
-
-        }
+        status.innerText = "FRONT LOST";
 
     });
-
 
 
     // =====================================
-    // مجبور کردن Video Texture به آپدیت
+    // BACK TARGET
+    // =====================================
+
+    backTarget.addEventListener("targetFound", async () => {
+
+        console.log("BACK TARGET FOUND");
+
+        status.innerText = "BACK FOUND";
+
+        frontVideo.pause();
+
+        backVideo.muted = false;
+        backVideo.currentTime = 0;
+
+        try {
+
+            await backVideo.play();
+
+            status.innerText =
+                "BACK PLAYING " +
+                backVideo.currentTime.toFixed(1);
+
+        } catch (error) {
+
+            status.innerText = "BACK VIDEO ERROR";
+
+            console.log(error);
+
+        }
+
+    });
+
+
+    backTarget.addEventListener("targetLost", () => {
+
+        console.log("BACK TARGET LOST");
+
+        backVideo.pause();
+
+        status.innerText = "BACK LOST";
+
+    });
+
+
+    // =====================================
+    // VIDEO TEXTURE UPDATE
     // =====================================
 
     scene.addEventListener("renderstart", () => {
 
         scene.addEventListener("tick", () => {
 
-
-            // FRONT
 
             const frontMesh =
                 frontARVideo.getObject3D("mesh");
@@ -162,9 +154,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
-
-
-            // BACK
 
             const backMesh =
                 backARVideo.getObject3D("mesh");
