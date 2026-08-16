@@ -1,16 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const scene = document.querySelector("a-scene");
-
     const video = document.querySelector("#frontVideo");
+    const target = document.querySelector(
+        '[mindar-image-target="targetIndex:0"]'
+    );
 
-    const arVideo = document.querySelector("#frontARVideo");
-
-
-    // =========================
-    // STATUS
-    // =========================
-
+    // نمایش وضعیت روی صفحه
     const status = document.createElement("div");
 
     status.style.position = "fixed";
@@ -20,117 +15,63 @@ document.addEventListener("DOMContentLoaded", () => {
 
     status.style.background = "rgba(0,0,0,0.8)";
     status.style.color = "white";
-
     status.style.padding = "10px";
-    status.style.fontSize = "18px";
+    status.style.fontSize = "16px";
     status.style.direction = "ltr";
 
-    status.innerText = "JS LOADED";
+    status.innerText = "WAITING...";
 
     document.body.appendChild(status);
 
 
-    // =========================
-    // AR READY
-    // =========================
-
-    scene.addEventListener("arReady", () => {
-
-        status.innerText = "AR READY";
-
-        console.log("AR READY");
-
-    });
-
-
-    // =========================
-    // TARGET FOUND
-    // =========================
-
-    scene.addEventListener("targetFound", async () => {
+    target.addEventListener("targetFound", async () => {
 
         status.innerText = "TARGET FOUND";
 
-        console.log("TARGET FOUND");
-
         video.muted = false;
-
         video.currentTime = 0;
-
 
         try {
 
             await video.play();
 
             status.innerText =
-                "PLAYING " +
+                "PLAYING: " +
                 video.currentTime.toFixed(1);
+
+            setInterval(() => {
+
+                if (!video.paused) {
+
+                    status.innerText =
+                        "PLAYING: " +
+                        video.currentTime.toFixed(1);
+
+                } else {
+
+                    status.innerText = "PAUSED";
+
+                }
+
+            }, 500);
 
         } catch (error) {
 
-            console.log("VIDEO ERROR:", error);
-
             status.innerText = "VIDEO ERROR";
+
+            console.log(error);
 
         }
 
     });
 
 
-    // =========================
-    // TARGET LOST
-    // =========================
-
-    scene.addEventListener("targetLost", () => {
+    target.addEventListener("targetLost", () => {
 
         video.pause();
 
         status.innerText = "TARGET LOST";
 
     });
-
-
-    // =========================
-    // VIDEO TEXTURE UPDATE
-    // =========================
-
-    scene.addEventListener("renderstart", () => {
-
-        scene.addEventListener("tick", () => {
-
-            const mesh =
-                arVideo.getObject3D("mesh");
-
-
-            if (
-                mesh &&
-                mesh.material &&
-                mesh.material.map
-            ) {
-
-                mesh.material.map.needsUpdate = true;
-
-            }
-
-        });
-
-    });
-
-
-    // =========================
-    // VIDEO TIME
-    // =========================
-
-    setInterval(() => {
-
-        if (!video.paused) {
-
-            status.innerText =
-                "PLAYING " +
-                video.currentTime.toFixed(1);
-
-        }
-
-    }, 500);
 
 });
