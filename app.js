@@ -1,240 +1,78 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded",()=>{
 
-    const scene = document.querySelector("a-scene");
 
-    const frontVideo = document.querySelector("#frontVideo");
-    const backVideo = document.querySelector("#backVideo");
+const scene=document.querySelector("a-scene");
 
-    const frontTarget = document.querySelector(
-        '[mindar-image-target="targetIndex: 0"]'
-    );
+const frontVideo=document.querySelector("#frontVideo");
+const backVideo=document.querySelector("#backVideo");
 
-    const backTarget = document.querySelector(
-        '[mindar-image-target="targetIndex: 1"]'
-    );
 
-    const frontARVideo = document.querySelector("#frontARVideo");
-    const backARVideo = document.querySelector("#backARVideo");
+scene.addEventListener("arReady",()=>{
+console.log("AR READY");
+});
 
 
-    // =========================
-    // STATUS
-    // =========================
 
-    const status = document.createElement("div");
+scene.addEventListener("targetFound",async(e)=>{
 
-    status.style.position = "fixed";
-    status.style.top = "10px";
-    status.style.left = "10px";
-    status.style.zIndex = "999999";
 
-    status.style.background =
-        "rgba(0,0,0,0.8)";
+let target=e.target;
 
-    status.style.color = "white";
 
-    status.style.padding = "10px";
+let index=target.getAttribute("mindar-image-target").targetIndex;
 
-    status.style.fontSize = "18px";
 
-    status.style.direction = "ltr";
+if(index===0){
 
-    status.innerText = "JS LOADED";
+frontVideo.currentTime=0;
+frontVideo.muted=false;
 
-    document.body.appendChild(status);
+try{
+await frontVideo.play();
+}catch(err){
+console.log(err);
+}
 
+}
 
-    // =========================
-    // AR READY
-    // =========================
 
-    scene.addEventListener("arReady", () => {
 
-        status.innerText = "AR READY";
+if(index===1){
 
-    });
+backVideo.currentTime=0;
+backVideo.muted=false;
 
+try{
+await backVideo.play();
+}catch(err){
+console.log(err);
+}
 
-    // =========================
-    // FRONT TARGET
-    // =========================
+}
 
-    frontTarget.addEventListener(
-        "targetFound",
-        async () => {
 
-            status.innerText =
-                "FRONT TARGET FOUND";
 
+});
 
-            // توقف پشت
 
-            backVideo.pause();
 
+scene.addEventListener("targetLost",(e)=>{
 
-            // شروع جلو
 
-            frontVideo.muted = true;
+let index=e.target.getAttribute("mindar-image-target").targetIndex;
 
-            frontVideo.currentTime = 0;
 
+if(index===0)
+frontVideo.pause();
 
-            try {
 
-                await frontVideo.play();
+if(index===1)
+backVideo.pause();
 
-                status.innerText =
-                    "FRONT PLAYING " +
-                    frontVideo.currentTime.toFixed(1);
 
-            }
 
-            catch (error) {
+});
 
-                console.log(error);
 
-                status.innerText =
-                    "FRONT VIDEO ERROR";
-
-            }
-
-        }
-    );
-
-
-    // =========================
-    // FRONT LOST
-    // =========================
-
-    frontTarget.addEventListener(
-        "targetLost",
-        () => {
-
-            frontVideo.pause();
-
-            status.innerText =
-                "FRONT TARGET LOST";
-
-        }
-    );
-
-
-    // =========================
-    // BACK TARGET
-    // =========================
-
-    backTarget.addEventListener(
-        "targetFound",
-        async () => {
-
-            status.innerText =
-                "BACK TARGET FOUND";
-
-
-            // توقف جلو
-
-            frontVideo.pause();
-
-
-            // شروع پشت
-
-            backVideo.muted = true;
-
-            backVideo.currentTime = 0;
-
-
-            try {
-
-                await backVideo.play();
-
-                status.innerText =
-                    "BACK PLAYING " +
-                    backVideo.currentTime.toFixed(1);
-
-            }
-
-            catch (error) {
-
-                console.log(error);
-
-                status.innerText =
-                    "BACK VIDEO ERROR";
-
-            }
-
-        }
-    );
-
-
-    // =========================
-    // BACK LOST
-    // =========================
-
-    backTarget.addEventListener(
-        "targetLost",
-        () => {
-
-            backVideo.pause();
-
-            status.innerText =
-                "BACK TARGET LOST";
-
-        }
-    );
-
-
-    // =========================
-    // VIDEO TEXTURE UPDATE
-    // =========================
-
-    scene.addEventListener(
-        "renderstart",
-        () => {
-
-            scene.addEventListener(
-                "tick",
-                () => {
-
-
-                    // FRONT
-
-                    const frontMesh =
-                        frontARVideo.getObject3D("mesh");
-
-
-                    if (
-                        frontMesh &&
-                        frontMesh.material &&
-                        frontMesh.material.map
-                    ) {
-
-                        frontMesh.material.map.needsUpdate =
-                            true;
-
-                    }
-
-
-                    // BACK
-
-                    const backMesh =
-                        backARVideo.getObject3D("mesh");
-
-
-                    if (
-                        backMesh &&
-                        backMesh.material &&
-                        backMesh.material.map
-                    ) {
-
-                        backMesh.material.map.needsUpdate =
-                            true;
-
-                    }
-
-                }
-            );
-
-        }
-    );
 
 });
