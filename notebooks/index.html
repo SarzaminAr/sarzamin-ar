@@ -5,7 +5,8 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>Notebook AR</title>
 
@@ -13,9 +14,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-<script defer src="app.js?v=1"></script>
+<script defer src="./app.js?v=1"></script>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="./style.css">
 
 </head>
 
@@ -23,31 +24,54 @@
 <body>
 
 
+<div id="status">
+در حال آماده‌سازی دوربین...
+</div>
+
+
 <a-scene
-mindar-image="imageTargetSrc: ./targetsnot1.mind;"
+
+mindar-image="
+imageTargetSrc: ./targetsnot1.mind;
+autoStart: true;
+uiLoading: no;
+uiScanning: no;
+uiError: yes;
+"
+
+embedded
+
 color-space="sRGB"
-renderer="colorManagement: true"
+
+renderer="
+colorManagement: true;
+physicallyCorrectLights: true;
+"
+
 vr-mode-ui="enabled: false"
+
 device-orientation-permission-ui="enabled: false">
-
-vr-mode-ui="enabled:false"
-
-device-orientation-permission-ui="enabled:false"
-
-renderer="colorManagement:true;">
 
 
 <a-assets>
 
 
 <video
-id="notebookVideo"
+
+id="notVideo"
+
 src="./choromi/Not1.mp4"
+
 preload="auto"
+
 loop
+
 muted
+
 playsinline
+
 webkit-playsinline>
+
 </video>
 
 
@@ -56,23 +80,32 @@ webkit-playsinline>
 
 
 <a-camera
+
 position="0 0 0"
-look-controls="enabled:false">
+
+look-controls="enabled: false">
+
 </a-camera>
 
 
 
-<!-- دفتر -->
+<a-entity
 
-<a-entity mindar-image-target="targetIndex:0">
+id="notTarget"
+
+mindar-image-target="targetIndex:0">
 
 
 <a-video
-id="notebookARVideo"
-src="#notebookVideo"
+
+src="#notVideo"
+
 width="1"
-height="1"
-position="0 0 0">
+
+height="1.4"
+
+position="0 0 0.01">
+
 </a-video>
 
 
@@ -83,4 +116,5 @@ position="0 0 0">
 
 
 </body>
+
 </html>
