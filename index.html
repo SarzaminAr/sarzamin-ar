@@ -1,36 +1,16 @@
 <!DOCTYPE html>
-<html lang="fa">
-
+<html>
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sarzamin AR</title>
+<title>Sarzamin AR Notebook</title>
 
-<script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-<script defer src="app.js?v=105"></script>
-
-
-<style>
-
-html,body{
-margin:0;
-width:100%;
-height:100%;
-overflow:hidden;
-}
-
-a-scene{
-width:100%;
-height:100%;
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -41,44 +21,31 @@ height:100%;
 <a-scene
 
 mindar-image="
-imageTargetSrc: ./targets.mind;
+imageTargetSrc: ./target.mind;
+autoStart: true;
 "
 
-embedded
+renderer="
+colorManagement: true;
+"
 
-vr-mode-ui="enabled:false"
+vr-mode-ui="enabled: false"
 
-device-orientation-permission-ui="enabled:false"
+device-orientation-permission-ui="enabled: false"
 
-renderer="colorManagement:true;"
 >
 
 
 <a-assets>
 
-
-<video
-id="frontVideo"
-src="./front/front.mp4"
-preload="auto"
+<video 
+id="video"
+src="./video.mp4"
 loop
 muted
 playsinline
 webkit-playsinline>
 </video>
-
-
-
-<video
-id="backVideo"
-src="./back/back.mp4"
-preload="auto"
-loop
-muted
-playsinline
-webkit-playsinline>
-</video>
-
 
 </a-assets>
 
@@ -86,41 +53,33 @@ webkit-playsinline>
 
 <a-camera
 position="0 0 0"
-look-controls="enabled:false">
+look-controls="enabled:false"
+wasd-controls="enabled:false">
 </a-camera>
 
 
 
-<!-- جلو -->
-
 <a-entity
 mindar-image-target="targetIndex:0">
 
+
 <a-video
-id="frontARVideo"
-src="#frontVideo"
+
+src="#video"
+
+position="0 0 0"
+
+rotation="0 0 0"
+
 width="1"
-height="0.993"
-position="0 0 0">
+
+height="1.5"
+
+>
+
 </a-video>
 
-</a-entity>
 
-
-
-<!-- پشت -->
-
-<a-entity
-mindar-image-target="targetIndex:1">
-
-<a-video
-    id="backARVideo"
-    src="#backVideo"
-    width="0.93"
-    height="0.69"
-    position="0 0 0">
-</a-video>
-    
 </a-entity>
 
 
@@ -128,6 +87,9 @@ mindar-image-target="targetIndex:1">
 </a-scene>
 
 
-</body>
 
+<script src="app.js"></script>
+
+
+</body>
 </html>
