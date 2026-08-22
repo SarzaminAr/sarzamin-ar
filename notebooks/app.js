@@ -2,66 +2,63 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const scene = document.querySelector("a-scene");
 
-    const notebookVideo =
-        document.querySelector("#notebookVideo");
+    const target = document.querySelector("#notTarget");
+
+    const video = document.querySelector("#notVideo");
+
+    const status = document.querySelector("#status");
 
 
     scene.addEventListener("arReady", () => {
 
-        console.log("NOTEBOOK AR READY");
+        console.log("AR READY");
+
+        status.innerText = "دوربین آماده است";
 
     });
 
 
-    scene.addEventListener("targetFound", async (e) => {
+    scene.addEventListener("arError", (event) => {
 
-        const target = e.target;
+        console.log("AR ERROR", event);
 
-        const index =
-            target.getAttribute(
-                "mindar-image-target"
-            ).targetIndex;
+        status.innerText = "خطا در راه‌اندازی دوربین";
+
+    });
 
 
-        if (index === 0) {
+    target.addEventListener("targetFound", async () => {
 
-            console.log("NOTEBOOK TARGET FOUND");
+        console.log("TARGET FOUND");
 
-            notebookVideo.currentTime = 0;
+        status.innerText = "دفتر پیدا شد";
 
-            notebookVideo.muted = false;
+        video.currentTime = 0;
 
-            try {
+        try {
 
-                await notebookVideo.play();
+            await video.play();
 
-            } catch (err) {
+        }
 
-                console.log("VIDEO ERROR:", err);
+        catch (error) {
 
-            }
+            console.log("VIDEO ERROR:", error);
 
         }
 
     });
 
 
-    scene.addEventListener("targetLost", (e) => {
+    target.addEventListener("targetLost", () => {
 
-        const target = e.target;
+        console.log("TARGET LOST");
 
-        const index =
-            target.getAttribute(
-                "mindar-image-target"
-            ).targetIndex;
+        video.pause();
 
-
-        if (index === 0) {
-
-            notebookVideo.pause();
-
-        }
+        status.innerText = "دوربین آماده است";
 
     });
+
 
 });
