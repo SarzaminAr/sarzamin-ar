@@ -5,22 +5,17 @@
 
 <meta charset="UTF-8">
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Notebook AR</title>
-
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-
 <script defer src="app.js?v=1"></script>
 
 <link rel="stylesheet" href="style.css">
-
 
 </head>
 
@@ -31,7 +26,7 @@ content="width=device-width, initial-scale=1.0">
 <a-scene
 
 mindar-image="
-imageTargetSrc: ./targets.mind;
+imageTargetSrc: ./targetsnot1.mind;
 "
 
 embedded
@@ -47,21 +42,13 @@ renderer="colorManagement:true;">
 
 
 <video
-
 id="notebookVideo"
-
-src="./دفتر کرومی/animation.mp4"
-
+src="./choromi/Not1.mp4"
 preload="auto"
-
 loop
-
 muted
-
 playsinline
-
 webkit-playsinline>
-
 </video>
 
 
@@ -70,34 +57,23 @@ webkit-playsinline>
 
 
 <a-camera
-
 position="0 0 0"
-
 look-controls="enabled:false">
-
 </a-camera>
 
 
 
 <!-- دفتر -->
 
-<a-entity
-
-mindar-image-target="targetIndex:0">
+<a-entity mindar-image-target="targetIndex:0">
 
 
 <a-video
-
 id="notebookARVideo"
-
 src="#notebookVideo"
-
 width="1"
-
 height="1"
-
 position="0 0 0">
-
 </a-video>
 
 
@@ -108,5 +84,4 @@ position="0 0 0">
 
 
 </body>
-
 </html>
