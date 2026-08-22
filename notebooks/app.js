@@ -1,98 +1,67 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+    const scene = document.querySelector("a-scene");
 
-const scene = document.querySelector("a-scene");
-
-
-const notebookVideo =
-document.querySelector("#notebookVideo");
+    const notebookVideo =
+        document.querySelector("#notebookVideo");
 
 
+    scene.addEventListener("arReady", () => {
 
-scene.addEventListener("arReady", () => {
+        console.log("NOTEBOOK AR READY");
 
-    console.log("NOTEBOOK AR READY");
-
-});
-
+    });
 
 
-scene.addEventListener("targetFound", async (e) => {
+    scene.addEventListener("targetFound", async (e) => {
+
+        const target = e.target;
+
+        const index =
+            target.getAttribute(
+                "mindar-image-target"
+            ).targetIndex;
 
 
-    const target = e.target;
+        if (index === 0) {
 
+            console.log("NOTEBOOK TARGET FOUND");
 
-    const index =
-    target.getAttribute(
-        "mindar-image-target"
-    ).targetIndex;
+            notebookVideo.currentTime = 0;
 
+            notebookVideo.muted = false;
 
+            try {
 
-    if (index === 0) {
+                await notebookVideo.play();
 
+            } catch (err) {
 
-        console.log("NOTEBOOK FOUND");
+                console.log("VIDEO ERROR:", err);
 
-
-        notebookVideo.currentTime = 0;
-
-
-        notebookVideo.muted = false;
-
-
-        try {
-
-
-            await notebookVideo.play();
-
+            }
 
         }
 
+    });
 
-        catch (err) {
+
+    scene.addEventListener("targetLost", (e) => {
+
+        const target = e.target;
+
+        const index =
+            target.getAttribute(
+                "mindar-image-target"
+            ).targetIndex;
 
 
-            console.log(
-                "VIDEO ERROR:",
-                err
-            );
+        if (index === 0) {
 
+            notebookVideo.pause();
 
         }
 
-
-    }
-
-
-});
-
-
-
-scene.addEventListener("targetLost", (e) => {
-
-
-    const index =
-    e.target.getAttribute(
-        "mindar-image-target"
-    ).targetIndex;
-
-
-
-    if (index === 0) {
-
-
-        console.log("NOTEBOOK LOST");
-
-
-        notebookVideo.pause();
-
-
-    }
-
-
-});
-
+    });
 
 });
