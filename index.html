@@ -13,21 +13,17 @@
 
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-<script defer src="app.js?v=106"></script>
+<script defer src="app.js?v=107"></script>
 
 <link rel="stylesheet" href="style.css">
 
 </head>
 
-
 <body>
-
 
 <a-scene
 
-mindar-image="
-imageTargetSrc: ./targets.mind;
-"
+mindar-image="imageTargetSrc: ./targets.mind;"
 
 embedded
 
@@ -40,10 +36,9 @@ renderer="colorManagement:true;">
 
 <a-assets>
 
-
 <video
 id="frontVideo"
-src="./front/video.mp4"
+src="./front/front.mp4"
 preload="auto"
 loop
 muted
@@ -54,14 +49,13 @@ webkit-playsinline>
 
 <video
 id="backVideo"
-src="./back/video.mp4"
+src="./back/back.mp4"
 preload="auto"
 loop
 muted
 playsinline
 webkit-playsinline>
 </video>
-
 
 </a-assets>
 
@@ -72,7 +66,7 @@ look-controls="enabled:false">
 </a-camera>
 
 
-<!-- جلو -->
+<!-- جلوی تراکت -->
 
 <a-entity mindar-image-target="targetIndex:0">
 
@@ -87,7 +81,7 @@ position="0 0 0">
 </a-entity>
 
 
-<!-- پشت -->
+<!-- پشت تراکت -->
 
 <a-entity mindar-image-target="targetIndex:1">
 
@@ -103,7 +97,6 @@ position="0 0 0">
 
 
 </a-scene>
-
 
 </body>
 </html>
