@@ -13,17 +13,36 @@
 
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-<script defer src="app.js?v=107"></script>
+<script defer src="app.js?v=105"></script>
 
-<link rel="stylesheet" href="style.css">
+
+<style>
+
+html,body{
+margin:0;
+width:100%;
+height:100%;
+overflow:hidden;
+}
+
+a-scene{
+width:100%;
+height:100%;
+}
+
+</style>
 
 </head>
 
+
 <body>
+
 
 <a-scene
 
-mindar-image="imageTargetSrc: ./targets.mind;"
+mindar-image="
+imageTargetSrc: ./targets.mind;
+"
 
 embedded
 
@@ -31,10 +50,12 @@ vr-mode-ui="enabled:false"
 
 device-orientation-permission-ui="enabled:false"
 
-renderer="colorManagement:true;">
+renderer="colorManagement:true;"
+>
 
 
 <a-assets>
+
 
 <video
 id="frontVideo"
@@ -47,6 +68,7 @@ webkit-playsinline>
 </video>
 
 
+
 <video
 id="backVideo"
 src="./back/back.mp4"
@@ -57,7 +79,9 @@ playsinline
 webkit-playsinline>
 </video>
 
+
 </a-assets>
+
 
 
 <a-camera
@@ -66,9 +90,11 @@ look-controls="enabled:false">
 </a-camera>
 
 
-<!-- جلوی تراکت -->
 
-<a-entity mindar-image-target="targetIndex:0">
+<!-- جلو -->
+
+<a-entity
+mindar-image-target="targetIndex:0">
 
 <a-video
 id="frontARVideo"
@@ -81,22 +107,27 @@ position="0 0 0">
 </a-entity>
 
 
-<!-- پشت تراکت -->
 
-<a-entity mindar-image-target="targetIndex:1">
+<!-- پشت -->
+
+<a-entity
+mindar-image-target="targetIndex:1">
 
 <a-video
-id="backARVideo"
-src="#backVideo"
-width="0.93"
-height="0.69"
-position="0 0 0">
+    id="backARVideo"
+    src="#backVideo"
+    width="0.93"
+    height="0.69"
+    position="0 0 0">
 </a-video>
-
+    
 </a-entity>
+
 
 
 </a-scene>
 
+
 </body>
+
 </html>
