@@ -1,71 +1,77 @@
-document.addEventListener("DOMContentLoaded", () => {
-
-    const scene = document.querySelector("a-scene");
-
-    const frontVideo = document.querySelector("#frontVideo");
-    const backVideo = document.querySelector("#backVideo");
+document.addEventListener("DOMContentLoaded",()=>{
 
 
-    scene.addEventListener("arReady", () => {
-        console.log("AR READY");
-    });
+const scene=document.querySelector("a-scene");
+
+const frontVideo=document.querySelector("#frontVideo");
+const backVideo=document.querySelector("#backVideo");
 
 
-    scene.addEventListener("targetFound", async (e) => {
-
-        const index =
-            e.target
-                .getAttribute("mindar-image-target")
-                .targetIndex;
+scene.addEventListener("arReady",()=>{
+console.log("AR READY");
+});
 
 
-        if (index === 0) {
 
-            frontVideo.currentTime = 0;
-            frontVideo.muted = true;
-
-            try {
-                await frontVideo.play();
-            } catch (err) {
-                console.log("FRONT ERROR:", err);
-            }
-
-        }
+scene.addEventListener("targetFound",async(e)=>{
 
 
-        if (index === 1) {
-
-            backVideo.currentTime = 0;
-            backVideo.muted = true;
-
-            try {
-                await backVideo.play();
-            } catch (err) {
-                console.log("BACK ERROR:", err);
-            }
-
-        }
-
-    });
+let target=e.target;
 
 
-    scene.addEventListener("targetLost", (e) => {
-
-        const index =
-            e.target
-                .getAttribute("mindar-image-target")
-                .targetIndex;
+let index=target.getAttribute("mindar-image-target").targetIndex;
 
 
-        if (index === 0) {
-            frontVideo.pause();
-        }
+if(index===0){
+
+frontVideo.currentTime=0;
+frontVideo.muted=false;
+
+try{
+await frontVideo.play();
+}catch(err){
+console.log(err);
+}
+
+}
 
 
-        if (index === 1) {
-            backVideo.pause();
-        }
 
-    });
+if(index===1){
+
+backVideo.currentTime=0;
+backVideo.muted=false;
+
+try{
+await backVideo.play();
+}catch(err){
+console.log(err);
+}
+
+}
+
+
+
+});
+
+
+
+scene.addEventListener("targetLost",(e)=>{
+
+
+let index=e.target.getAttribute("mindar-image-target").targetIndex;
+
+
+if(index===0)
+frontVideo.pause();
+
+
+if(index===1)
+backVideo.pause();
+
+
+
+});
+
 
 });
