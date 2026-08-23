@@ -12,20 +12,15 @@ console.log("AR READY");
 });
 
 
-
 scene.addEventListener("targetFound",async(e)=>{
 
 
-let target=e.target;
-
-
-let index=target.getAttribute("mindar-image-target").targetIndex;
+let index=e.target.getAttribute("mindar-image-target").targetIndex;
 
 
 if(index===0){
 
 frontVideo.currentTime=0;
-frontVideo.muted=false;
 
 try{
 await frontVideo.play();
@@ -36,11 +31,9 @@ console.log(err);
 }
 
 
-
 if(index===1){
 
 backVideo.currentTime=0;
-backVideo.muted=false;
 
 try{
 await backVideo.play();
@@ -49,7 +42,6 @@ console.log(err);
 }
 
 }
-
 
 
 });
@@ -70,9 +62,7 @@ if(index===1)
 backVideo.pause();
 
 
-
 });
-
 
 
 });
