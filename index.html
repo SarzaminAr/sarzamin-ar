@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sarzamin AR Notebook</title>
+<title>Sarzamin AR</title>
 
 <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 
@@ -21,31 +22,36 @@
 <a-scene
 
 mindar-image="
-imageTargetSrc: ./target.mind;
+imageTargetSrc: ./targets.mind;
 autoStart: true;
 "
 
-renderer="
-colorManagement: true;
-"
+renderer="colorManagement:true"
 
-vr-mode-ui="enabled: false"
+vr-mode-ui="enabled:false"
 
-device-orientation-permission-ui="enabled: false"
-
->
+device-orientation-permission-ui="enabled:false">
 
 
 <a-assets>
 
-<video 
-id="video"
-src="./video.mp4"
+<video
+id="frontVideo"
+src="./front/video.mp4"
 loop
-muted
 playsinline
 webkit-playsinline>
 </video>
+
+
+<video
+id="backVideo"
+src="./back/video.mp4"
+loop
+playsinline
+webkit-playsinline>
+</video>
+
 
 </a-assets>
 
@@ -53,39 +59,36 @@ webkit-playsinline>
 
 <a-camera
 position="0 0 0"
-look-controls="enabled:false"
-wasd-controls="enabled:false">
+look-controls="enabled:false">
 </a-camera>
 
 
 
-<a-entity
-mindar-image-target="targetIndex:0">
-
+<a-entity mindar-image-target="targetIndex:0">
 
 <a-video
-
-src="#video"
-
+src="#frontVideo"
 position="0 0 0"
-
-rotation="0 0 0"
-
 width="1"
-
-height="1.5"
-
->
-
+height="1.5">
 </a-video>
-
 
 </a-entity>
 
 
+<a-entity mindar-image-target="targetIndex:1">
+
+<a-video
+src="#backVideo"
+position="0 0 0"
+width="1"
+height="1.5">
+</a-video>
+
+</a-entity>
+
 
 </a-scene>
-
 
 
 <script src="app.js"></script>
