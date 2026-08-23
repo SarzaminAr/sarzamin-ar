@@ -1,56 +1,77 @@
-const scene = document.querySelector("a-scene");
-const video = document.querySelector("#frontVideo");
+document.addEventListener("DOMContentLoaded",()=>{
 
 
-// -----------------------------
-// AR آماده شد
-// -----------------------------
+const scene=document.querySelector("a-scene");
 
-scene.addEventListener("arReady", () => {
+const frontVideo=document.querySelector("#frontVideo");
+const backVideo=document.querySelector("#backVideo");
 
-    console.log("AR READY");
+
+scene.addEventListener("arReady",()=>{
+console.log("AR READY");
+});
+
+
+
+scene.addEventListener("targetFound",async(e)=>{
+
+
+let target=e.target;
+
+
+let index=target.getAttribute("mindar-image-target").targetIndex;
+
+
+if(index===0){
+
+frontVideo.currentTime=0;
+frontVideo.muted=false;
+
+try{
+await frontVideo.play();
+}catch(err){
+console.log(err);
+}
+
+}
+
+
+
+if(index===1){
+
+backVideo.currentTime=0;
+backVideo.muted=false;
+
+try{
+await backVideo.play();
+}catch(err){
+console.log(err);
+}
+
+}
+
+
 
 });
 
 
-// -----------------------------
-// دفتر شناسایی شد
-// -----------------------------
 
-scene.addEventListener("targetFound", async () => {
+scene.addEventListener("targetLost",(e)=>{
 
-    console.log("TARGET FOUND");
 
-    video.muted = false;
-    video.volume = 1;
+let index=e.target.getAttribute("mindar-image-target").targetIndex;
 
-    video.currentTime = 0;
 
-    try {
+if(index===0)
+frontVideo.pause();
 
-        await video.play();
 
-        console.log("PLAYING WITH SOUND");
+if(index===1)
+backVideo.pause();
 
-    } catch (error) {
 
-        console.log("PLAY ERROR:", error);
-
-    }
 
 });
 
-
-// -----------------------------
-// دفتر از جلوی دوربین خارج شد
-// -----------------------------
-
-scene.addEventListener("targetLost", () => {
-
-    console.log("TARGET LOST");
-
-    video.pause();
-
-    video.currentTime = 0;
 
 });
