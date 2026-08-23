@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="fa">
+
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Sarzamin AR</title>
 
-<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+<script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+<script defer src="app.js?v=106"></script>
 
 <link rel="stylesheet" href="style.css">
 
@@ -23,22 +27,26 @@
 
 mindar-image="
 imageTargetSrc: ./targets.mind;
-autoStart: true;
 "
 
-renderer="colorManagement:true"
+embedded
 
 vr-mode-ui="enabled:false"
 
-device-orientation-permission-ui="enabled:false">
+device-orientation-permission-ui="enabled:false"
+
+renderer="colorManagement:true;">
 
 
 <a-assets>
 
+
 <video
 id="frontVideo"
 src="./front/video.mp4"
+preload="auto"
 loop
+muted
 playsinline
 webkit-playsinline>
 </video>
@@ -47,7 +55,9 @@ webkit-playsinline>
 <video
 id="backVideo"
 src="./back/video.mp4"
+preload="auto"
 loop
+muted
 playsinline
 webkit-playsinline>
 </video>
@@ -56,42 +66,43 @@ webkit-playsinline>
 </a-assets>
 
 
-
 <a-camera
 position="0 0 0"
 look-controls="enabled:false">
 </a-camera>
 
 
+<!-- جلو -->
 
 <a-entity mindar-image-target="targetIndex:0">
 
 <a-video
+id="frontARVideo"
 src="#frontVideo"
-position="0 0 0"
 width="1"
-height="1.5">
+height="0.993"
+position="0 0 0">
 </a-video>
 
 </a-entity>
 
 
+<!-- پشت -->
+
 <a-entity mindar-image-target="targetIndex:1">
 
 <a-video
+id="backARVideo"
 src="#backVideo"
-position="0 0 0"
-width="1"
-height="1.5">
+width="0.93"
+height="0.69"
+position="0 0 0">
 </a-video>
 
 </a-entity>
 
 
 </a-scene>
-
-
-<script src="app.js"></script>
 
 
 </body>
