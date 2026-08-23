@@ -1,77 +1,99 @@
-document.addEventListener("DOMContentLoaded",()=>{
+const scene = document.querySelector("a-scene");
+const video = document.querySelector("#frontVideo");
+const soundButton = document.querySelector("#soundButton");
+
+let audioUnlocked = false;
 
 
-const scene=document.querySelector("a-scene");
+// --------------------------------
+// باز کردن اجازه صدا با لمس کاربر
+// --------------------------------
 
-const frontVideo=document.querySelector("#frontVideo");
-const backVideo=document.querySelector("#backVideo");
+soundButton.addEventListener("click", async () => {
 
+    try {
 
-scene.addEventListener("arReady",()=>{
-console.log("AR READY");
-});
+        video.muted = false;
+        video.volume = 1;
 
+        // یک بار پخش برای گرفتن اجازه صدا از مرورگر
+        await video.play();
 
+        video.pause();
+        video.currentTime = 0;
 
-scene.addEventListener("targetFound",async(e)=>{
+        audioUnlocked = true;
 
+        soundButton.style.display = "none";
 
-let target=e.target;
+        console.log("Audio unlocked");
 
+    } catch (error) {
 
-let index=target.getAttribute("mindar-image-target").targetIndex;
+        console.log("Audio unlock error:", error);
 
-
-if(index===0){
-
-frontVideo.currentTime=0;
-frontVideo.muted=false;
-
-try{
-await frontVideo.play();
-}catch(err){
-console.log(err);
-}
-
-}
-
-
-
-if(index===1){
-
-backVideo.currentTime=0;
-backVideo.muted=false;
-
-try{
-await backVideo.play();
-}catch(err){
-console.log(err);
-}
-
-}
-
-
+    }
 
 });
 
 
+// --------------------------------
+// آماده شدن AR
+// --------------------------------
 
-scene.addEventListener("targetLost",(e)=>{
+scene.addEventListener("arReady", () => {
 
-
-let index=e.target.getAttribute("mindar-image-target").targetIndex;
-
-
-if(index===0)
-frontVideo.pause();
-
-
-if(index===1)
-backVideo.pause();
-
-
+    console.log("AR READY");
 
 });
 
+
+// --------------------------------
+// پیدا شدن دفتر
+// --------------------------------
+
+scene.addEventListener("targetFound", async () => {
+
+    console.log("CHOROMI TARGET FOUND");
+
+    if (!audioUnlocked) {
+
+        console.log("Waiting for user interaction to enable sound");
+
+        return;
+
+    }
+
+    try {
+
+        video.muted = false;
+        video.volume = 1;
+
+        video.currentTime = 0;
+
+        await video.play();
+
+        console.log("CHOROMI VIDEO PLAYING WITH SOUND");
+
+    } catch (error) {
+
+        console.log("Video play error:", error);
+
+    }
+
+});
+
+
+// --------------------------------
+// خارج شدن دفتر از دوربین
+// --------------------------------
+
+scene.addEventListener("targetLost", () => {
+
+    console.log("CHOROMI TARGET LOST");
+
+    video.pause();
+
+    video.currentTime = 0;
 
 });
